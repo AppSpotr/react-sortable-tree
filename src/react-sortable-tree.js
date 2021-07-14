@@ -194,8 +194,8 @@ class ReactSortableTree extends Component {
 
     instanceProps.searchQuery = nextProps.searchQuery;
     instanceProps.searchFocusOffset = nextProps.searchFocusOffset;
-    newState.instanceProps = {...instanceProps, ...newState.instanceProps };
- 
+    newState.instanceProps = { ...instanceProps, ...newState.instanceProps };
+
     return newState;
   }
 
@@ -230,7 +230,9 @@ class ReactSortableTree extends Component {
     // it means that the drag was canceled or the dragSource dropped
     // elsewhere, and we should reset the state of this tree
     if (!monitor.isDragging() && this.state.draggingTreeData) {
-      setTimeout(() => {this.endDrag()});
+      setTimeout(() => {
+        this.endDrag();
+      });
     }
   }
 
@@ -408,16 +410,20 @@ class ReactSortableTree extends Component {
       const rows = this.getRows(addedResult.treeData);
       const expandedParentPath = rows[addedResult.treeIndex].path;
 
+      const updatedDraggingTreeData = changeNodeAtPath({
+        treeData: newDraggingTreeData,
+        path: expandedParentPath.slice(0, -1),
+        newNode: ({ node }) => ({ ...node, expanded: true }),
+        getNodeKey: this.props.getNodeKey,
+      });
+
+      this.props.onDragChange(updatedDraggingTreeData)
+
       return {
         draggedNode,
         draggedDepth,
         draggedMinimumTreeIndex,
-        draggingTreeData: changeNodeAtPath({
-          treeData: newDraggingTreeData,
-          path: expandedParentPath.slice(0, -1),
-          newNode: ({ node }) => ({ ...node, expanded: true }),
-          getNodeKey: this.props.getNodeKey,
-        }),
+        draggingTreeData: updatedDraggingTreeData,
         // reset the scroll focus so it doesn't jump back
         // to a search result while dragging
         searchFocusTreeIndex: null,
@@ -902,6 +908,8 @@ ReactSortableTree.propTypes = {
 
   // rtl support
   rowDirection: PropTypes.string,
+
+  onDragChange: PropTypes.func,
 };
 
 ReactSortableTree.defaultProps = {
@@ -932,6 +940,7 @@ ReactSortableTree.defaultProps = {
   style: {},
   theme: {},
   onDragStateChanged: () => {},
+  onDragChange: () => {},
   onlyExpandSearchedNodes: false,
   rowDirection: 'ltr',
 };
