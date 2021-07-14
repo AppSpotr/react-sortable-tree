@@ -410,20 +410,18 @@ class ReactSortableTree extends Component {
       const rows = this.getRows(addedResult.treeData);
       const expandedParentPath = rows[addedResult.treeIndex].path;
 
-      const updatedDraggingTreeData = changeNodeAtPath({
-        treeData: newDraggingTreeData,
-        path: expandedParentPath.slice(0, -1),
-        newNode: ({ node }) => ({ ...node, expanded: true }),
-        getNodeKey: this.props.getNodeKey,
-      });
-
-      this.props.onDragChange(updatedDraggingTreeData)
+      this.props.onDragChange(addedResult.treeData)
 
       return {
         draggedNode,
         draggedDepth,
         draggedMinimumTreeIndex,
-        draggingTreeData: updatedDraggingTreeData,
+        draggingTreeData: changeNodeAtPath({
+          treeData: newDraggingTreeData,
+          path: expandedParentPath.slice(0, -1),
+          newNode: ({ node }) => ({ ...node, expanded: true }),
+          getNodeKey: this.props.getNodeKey,
+        }),
         // reset the scroll focus so it doesn't jump back
         // to a search result while dragging
         searchFocusTreeIndex: null,
