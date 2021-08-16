@@ -105,7 +105,7 @@
 }
 
 .rst__rowLabel {
-  flex: 0 1 auto;
+  flex: 1;
   padding-right: 20px;
 }
 .rst__rtl.rst__rowLabel {
