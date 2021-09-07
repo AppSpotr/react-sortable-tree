@@ -277,9 +277,7 @@ class ReactSortableTree extends Component {
       getNodeKey: this.props.getNodeKey,
     });
 
-    if (!this.props.onDragChange) {
-      this.this.props.onChange(treeData);
-    }
+    this.props.onChange(treeData);
 
     this.props.onMoveNode({
       treeData,
@@ -412,8 +410,7 @@ class ReactSortableTree extends Component {
       const rows = this.getRows(addedResult.treeData);
       const expandedParentPath = rows[addedResult.treeIndex].path;
 
-      this.props.onDragChange(addedResult.treeData);
-
+      this.props.onChange(addedResult.treeData);
       return {
         draggedNode,
         draggedDepth,
