@@ -114,6 +114,7 @@ class ReactSortableTree extends Component {
       searchMatches: [],
       searchFocusTreeIndex: null,
       dragging: false,
+      updatingTreeData: null,
 
       // props that need to be used in gDSFP or static functions will be stored here
       instanceProps: {
@@ -393,45 +394,43 @@ class ReactSortableTree extends Component {
       return;
     }
 
-    this.setState(
-      ({ draggingTreeData, instanceProps }) => {
-        // Fall back to the tree data if something is being dragged in from
-        //  an external element
-        const newDraggingTreeData = draggingTreeData || instanceProps.treeData;
+    this.setState(({ draggingTreeData, instanceProps }) => {
+      // Fall back to the tree data if something is being dragged in from
+      //  an external element
+      const newDraggingTreeData = draggingTreeData || instanceProps.treeData;
 
-        const addedResult = memoizedInsertNode({
+      const addedResult = memoizedInsertNode({
+        treeData: newDraggingTreeData,
+        newNode: draggedNode,
+        depth: draggedDepth,
+        minimumTreeIndex: draggedMinimumTreeIndex,
+        expandParent: true,
+        getNodeKey: this.props.getNodeKey,
+      });
+
+      const rows = this.getRows(addedResult.treeData);
+      const expandedParentPath = rows[addedResult.treeIndex].path;
+
+      return {
+        draggedNode,
+        draggedDepth,
+        draggedMinimumTreeIndex,
+        draggingTreeData: changeNodeAtPath({
           treeData: newDraggingTreeData,
-          newNode: draggedNode,
-          depth: draggedDepth,
-          minimumTreeIndex: draggedMinimumTreeIndex,
-          expandParent: true,
-          getNodeKey: this.props.getNodeKey,
-        });
-
-        const rows = this.getRows(addedResult.treeData);
-        const expandedParentPath = rows[addedResult.treeIndex].path;
-
-        return {
-          draggedNode,
-          draggedDepth,
-          draggedMinimumTreeIndex,
-          draggingTreeData: changeNodeAtPath({
-            treeData: newDraggingTreeData,
-            path: expandedParentPath.slice(0, -1),
-            newNode: ({ node }) => ({
-              ...node,
-              expanded: true,
-            }),
-            getNodeKey: this.props.getNodeKey,
+          path: expandedParentPath.slice(0, -1),
+          newNode: ({ node }) => ({
+            ...node,
+            expanded: true,
           }),
-          // reset the scroll focus so it doesn't jump back
-          // to a search result while dragging
-          searchFocusTreeIndex: null,
-          dragging: true,
-        };
-      },
-      () => this.props.onChange(this.state.instanceProps.treeData)
-    );
+          getNodeKey: this.props.getNodeKey,
+        }),
+        // reset the scroll focus so it doesn't jump back
+        // to a search result while dragging
+        searchFocusTreeIndex: null,
+        dragging: true,
+        updatingTreeData: addedResult.treeData
+      };
+    }, () => this.props.onChange(this.state.updatingTreeData));
   }
 
   endDrag(dropResult) {
