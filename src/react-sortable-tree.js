@@ -277,7 +277,7 @@ class ReactSortableTree extends Component {
       getNodeKey: this.props.getNodeKey,
     });
 
-    // this.props.onChange(treeData);
+    this.props.onChange(treeData);
 
     this.props.onMoveNode({
       treeData,
