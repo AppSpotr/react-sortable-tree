@@ -3,7 +3,6 @@ import withScrolling, {
   createScrollingComponent,
   createVerticalStrength,
 } from 'frontend-collective-react-dnd-scrollzone';
-import isEqual from 'lodash.isequal';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { DndContext, DndProvider } from 'react-dnd';
@@ -152,51 +151,16 @@ class ReactSortableTree extends Component {
       .subscribeToStateChange(this.handleDndMonitorChange);
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { instanceProps } = prevState;
-    const newState = {};
-
-    const isTreeDataEqual = isEqual(instanceProps.treeData, nextProps.treeData);
-
-    // make sure we have the most recent version of treeData
-    instanceProps.treeData = nextProps.treeData;
-
-    if (!isTreeDataEqual) {
-      if (instanceProps.ignoreOneTreeUpdate) {
-        instanceProps.ignoreOneTreeUpdate = false;
-      } else {
-        newState.searchFocusTreeIndex = null;
-        ReactSortableTree.loadLazyChildren(nextProps, prevState);
-        Object.assign(
-          newState,
-          ReactSortableTree.search(nextProps, prevState, false, false, false)
-        );
-      }
-
-      newState.draggingTreeData = null;
-      newState.draggedNode = null;
-      newState.draggedMinimumTreeIndex = null;
-      newState.draggedDepth = null;
-      newState.dragging = false;
-    } else if (!isEqual(instanceProps.searchQuery, nextProps.searchQuery)) {
-      Object.assign(
-        newState,
-        ReactSortableTree.search(nextProps, prevState, true, true, false)
-      );
-    } else if (
-      instanceProps.searchFocusOffset !== nextProps.searchFocusOffset
-    ) {
-      Object.assign(
-        newState,
-        ReactSortableTree.search(nextProps, prevState, true, true, true)
-      );
-    }
-
-    instanceProps.searchQuery = nextProps.searchQuery;
-    instanceProps.searchFocusOffset = nextProps.searchFocusOffset;
-    newState.instanceProps = { ...instanceProps, ...newState.instanceProps };
-
-    return newState;
+  static getDerivedStateFromProps({treeData, searchQuery, searchFocusOffset, instanceProps: newInstanceProps}, {instanceProps}) {
+    return {
+      instanceProps: {
+        ...instanceProps,
+        ...newInstanceProps,
+        treeData,
+        searchQuery,
+        searchFocusOffset
+      },
+    };
   }
 
   // listen to dragging

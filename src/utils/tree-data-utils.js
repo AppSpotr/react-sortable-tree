@@ -920,7 +920,13 @@ export function insertNode({
   });
 
   if (!('insertedTreeIndex' in insertResult)) {
-    throw new Error('No suitable position found to insert.');
+    // APT-EDIT: don't throw error, return default instead
+    return {
+      treeData: [newNode],
+      treeIndex: 0,
+      path: [getNodeKey({ node: newNode, treeIndex: 0 })],
+      parentNode: null,
+    };
   }
 
   const treeIndex = insertResult.insertedTreeIndex;

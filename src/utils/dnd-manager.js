@@ -237,7 +237,7 @@ export default class DndManager {
         this.rafId = requestAnimationFrame(() => {
           this.dragHover({
             node: draggedNode,
-            path: monitor.getItem().path,
+            path: monitor.getItem()?.path,
             minimumTreeIndex: dropTargetProps.listIndex,
             depth: targetDepth,
           });
