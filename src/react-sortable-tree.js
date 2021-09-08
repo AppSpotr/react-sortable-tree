@@ -277,7 +277,7 @@ class ReactSortableTree extends Component {
       getNodeKey: this.props.getNodeKey,
     });
 
-    this.props.onChange(treeData);
+    // this.props.onChange(treeData);
 
     this.props.onMoveNode({
       treeData,
@@ -905,8 +905,6 @@ ReactSortableTree.propTypes = {
 
   // rtl support
   rowDirection: PropTypes.string,
-
-  onDragChange: PropTypes.func,
 };
 
 ReactSortableTree.defaultProps = {
@@ -937,7 +935,6 @@ ReactSortableTree.defaultProps = {
   style: {},
   theme: {},
   onDragStateChanged: () => {},
-  onDragChange: () => {},
   onlyExpandSearchedNodes: false,
   rowDirection: 'ltr',
 };
