@@ -114,7 +114,6 @@ class ReactSortableTree extends Component {
       searchMatches: [],
       searchFocusTreeIndex: null,
       dragging: false,
-      updatingTreeData: null,
 
       // props that need to be used in gDSFP or static functions will be stored here
       instanceProps: {
@@ -264,34 +263,34 @@ class ReactSortableTree extends Component {
     depth,
     minimumTreeIndex,
   }) {
-       const {
-         treeData,
-         treeIndex,
-         path,
-         parentNode: nextParentNode,
-       } = insertNode({
-         treeData: this.state.draggingTreeData,
-         newNode: node,
-         depth,
-         minimumTreeIndex,
-         expandParent: true,
-         getNodeKey: this.props.getNodeKey,
-       });
+    const {
+      treeData,
+      treeIndex,
+      path,
+      parentNode: nextParentNode,
+    } = insertNode({
+      treeData: this.state.draggingTreeData,
+      newNode: node,
+      depth,
+      minimumTreeIndex,
+      expandParent: true,
+      getNodeKey: this.props.getNodeKey,
+    });
 
-       // this.props.onChange(treeData);
+    this.props.onChange(treeData);
 
-       this.props.onMoveNode({
-         treeData,
-         node,
-         treeIndex,
-         path,
-         nextPath: path,
-         nextTreeIndex: treeIndex,
-         prevPath,
-         prevTreeIndex,
-         nextParentNode,
-       });
-     }
+    this.props.onMoveNode({
+      treeData,
+      node,
+      treeIndex,
+      path,
+      nextPath: path,
+      nextTreeIndex: treeIndex,
+      prevPath,
+      prevTreeIndex,
+      nextParentNode,
+    });
+  }
 
   // returns the new state after search
   static search(props, state, seekIndex, expand, singleSearch) {
@@ -411,6 +410,8 @@ class ReactSortableTree extends Component {
       const rows = this.getRows(addedResult.treeData);
       const expandedParentPath = rows[addedResult.treeIndex].path;
 
+      this.props.onChange(addedResult.treeData);
+
       return {
         draggedNode,
         draggedDepth,
@@ -428,9 +429,8 @@ class ReactSortableTree extends Component {
         // to a search result while dragging
         searchFocusTreeIndex: null,
         dragging: true,
-        updatingTreeData: addedResult.treeData
       };
-    }, () => this.props.onChange(this.state.updatingTreeData));
+    });
   }
 
   endDrag(dropResult) {
