@@ -264,34 +264,34 @@ class ReactSortableTree extends Component {
     depth,
     minimumTreeIndex,
   }) {
-    const {
-      treeData,
-      treeIndex,
-      path,
-      parentNode: nextParentNode,
-    } = insertNode({
-      treeData: this.state.draggingTreeData,
-      newNode: node,
-      depth,
-      minimumTreeIndex,
-      expandParent: true,
-      getNodeKey: this.props.getNodeKey,
-    });
+       const {
+         treeData,
+         treeIndex,
+         path,
+         parentNode: nextParentNode,
+       } = insertNode({
+         treeData: this.state.draggingTreeData,
+         newNode: node,
+         depth,
+         minimumTreeIndex,
+         expandParent: true,
+         getNodeKey: this.props.getNodeKey,
+       });
 
-    this.props.onChange(treeData);
+       // this.props.onChange(treeData);
 
-    this.props.onMoveNode({
-      treeData,
-      node,
-      treeIndex,
-      path,
-      nextPath: path,
-      nextTreeIndex: treeIndex,
-      prevPath,
-      prevTreeIndex,
-      nextParentNode,
-    });
-  }
+       this.props.onMoveNode({
+         treeData,
+         node,
+         treeIndex,
+         path,
+         nextPath: path,
+         nextTreeIndex: treeIndex,
+         prevPath,
+         prevTreeIndex,
+         nextParentNode,
+       });
+     }
 
   // returns the new state after search
   static search(props, state, seekIndex, expand, singleSearch) {
