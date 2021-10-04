@@ -4,7 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var withScrolling = require('frontend-collective-react-dnd-scrollzone');
+var withScrolling = require('@nosferatu500/react-dnd-scrollzone');
 var withScrolling__default = _interopDefault(withScrolling);
 var PropTypes = _interopDefault(require('prop-types'));
 var React = require('react');

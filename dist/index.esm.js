@@ -1,4 +1,4 @@
-import withScrolling, { createScrollingComponent, createVerticalStrength, createHorizontalStrength } from 'frontend-collective-react-dnd-scrollzone';
+import withScrolling, { createScrollingComponent, createVerticalStrength, createHorizontalStrength } from '@nosferatu500/react-dnd-scrollzone';
 import PropTypes from 'prop-types';
 import React, { Component, Children, cloneElement } from 'react';
 import { DragSource, DropTarget, DndContext, DndProvider } from 'react-dnd';

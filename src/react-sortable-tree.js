@@ -2,7 +2,7 @@ import withScrolling, {
   createHorizontalStrength,
   createScrollingComponent,
   createVerticalStrength,
-} from 'frontend-collective-react-dnd-scrollzone';
+} from '@nosferatu500/react-dnd-scrollzone';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { DndContext, DndProvider } from 'react-dnd';
