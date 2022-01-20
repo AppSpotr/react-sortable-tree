@@ -375,7 +375,7 @@ export function map({
     currentIndex: -1,
     path: [],
     lowerSiblingCounts: [],
-  }).node.children;
+  }).node?.children;
 }
 
 /**
@@ -903,6 +903,30 @@ export function insertNode({
       path: [getNodeKey({ node: newNode, treeIndex: 0 })],
       parentNode: null,
     };
+  }
+
+  const tempRes = addNodeAtDepthAndIndex({
+    targetDepth,
+    minimumTreeIndex,
+    newNode,
+    ignoreCollapsed,
+    expandParent,
+    getNodeKey,
+    isPseudoRoot: true,
+    isLastChild: true,
+    node: { children: treeData },
+    currentIndex: -1,
+    currentDepth: -1,
+  });
+
+  const parentCustomPath = tempRes?.parentNode?.path;
+
+  if (parentCustomPath)
+    // eslint-disable-next-line no-param-reassign
+    newNode.path = [...parentCustomPath, newNode?.id];
+  else {
+    // eslint-disable-next-line no-param-reassign
+    newNode.path = [newNode?.id];
   }
 
   const insertResult = addNodeAtDepthAndIndex({

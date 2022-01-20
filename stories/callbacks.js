@@ -9,8 +9,38 @@ export default class App extends Component {
 
     this.state = {
       treeData: [
-        { title: 'A', expanded: true, children: [{ title: 'B' }] },
-        { title: 'C' },
+        {
+          title: 'A',
+          id: 'A',
+          expanded: true,
+          path: ['A'],
+          children: [
+            {
+              title: 'B',
+              id: 'B',
+              path: ['A', 'B'],
+              expanded: true,
+              children: [
+                {
+                  title: 'D',
+                  id: 'D',
+                  expanded: true,
+                  path: ['A', 'B', 'D'],
+                  children: [
+                    {
+                      title: 'E',
+                      id: 'E',
+                      expanded: true,
+                      path: ['A', 'B', 'D', 'E'],
+                      children: []
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        { title: 'C', id: 'C', path: ['C'], children: [] },
       ],
       lastMovePrevPath: null,
       lastMoveNextPath: null,
