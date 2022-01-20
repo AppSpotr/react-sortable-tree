@@ -896,6 +896,8 @@ export function insertNode({
   ignoreCollapsed = true,
   expandParent = false,
 }) {
+  const updatedNewNode = { ...newNode };
+  let newObj = { ...newNode };
   if (!treeData && targetDepth === 0) {
     return {
       treeData: [newNode],
@@ -908,7 +910,7 @@ export function insertNode({
   const tempRes = addNodeAtDepthAndIndex({
     targetDepth,
     minimumTreeIndex,
-    newNode,
+    updatedNewNode,
     ignoreCollapsed,
     expandParent,
     getNodeKey,
@@ -921,18 +923,18 @@ export function insertNode({
 
   const parentCustomPath = tempRes?.parentNode?.path;
 
-  if (parentCustomPath)
+  if (parentCustomPath) {
     // eslint-disable-next-line no-param-reassign
-    newNode.path = [...parentCustomPath, newNode?.id];
-  else {
+    newObj['path'] = [...parentCustomPath, updatedNewNode?.id];
+  } else {
     // eslint-disable-next-line no-param-reassign
-    newNode.path = [newNode?.id];
+    newObj['path'] = [updatedNewNode?.id];
   }
 
   const insertResult = addNodeAtDepthAndIndex({
     targetDepth,
     minimumTreeIndex,
-    newNode,
+    newNode: newObj,
     ignoreCollapsed,
     expandParent,
     getNodeKey,
@@ -946,9 +948,9 @@ export function insertNode({
   if (!('insertedTreeIndex' in insertResult)) {
     // APT-EDIT: don't throw error, return default instead
     return {
-      treeData: [newNode],
+      treeData: [newObj],
       treeIndex: 0,
-      path: [getNodeKey({ node: newNode, treeIndex: 0 })],
+      path: [getNodeKey({ node: newObj, treeIndex: 0 })],
       parentNode: null,
     };
   }
@@ -957,10 +959,7 @@ export function insertNode({
   return {
     treeData: insertResult.node.children,
     treeIndex,
-    path: [
-      ...insertResult.parentPath,
-      getNodeKey({ node: newNode, treeIndex }),
-    ],
+    path: [...insertResult.parentPath, getNodeKey({ node: newObj, treeIndex })],
     parentNode: insertResult.parentNode,
   };
 }
