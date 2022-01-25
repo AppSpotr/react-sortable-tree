@@ -1156,7 +1156,6 @@ function addNodeAtDepthAndIndex(_ref21) {
       var extraNodeProps = expandParent ? {
         expanded: true
       } : {};
-      console.log('01 :', newNode);
 
       var _nextNode = _objectSpread2(_objectSpread2(_objectSpread2({}, node), extraNodeProps), {}, {
         children: node.children ? [newNode].concat(_toConsumableArray(node.children)) : [newNode]
@@ -1223,8 +1222,6 @@ function addNodeAtDepthAndIndex(_ref21) {
     } // Insert the newNode at the insertIndex
 
 
-    console.log('02 :', newNode);
-
     var _nextNode2 = _objectSpread2(_objectSpread2({}, node), {}, {
       children: [].concat(_toConsumableArray(node.children.slice(0, insertIndex)), [newNode], _toConsumableArray(node.children.slice(insertIndex)))
     }); // Return node with successful insert result
@@ -1260,7 +1257,6 @@ function addNodeAtDepthAndIndex(_ref21) {
         return child;
       }
 
-      console.log('03 :', newNode);
       var mapResult = addNodeAtDepthAndIndex({
         targetDepth: targetDepth,
         minimumTreeIndex: minimumTreeIndex,
@@ -1286,8 +1282,6 @@ function addNodeAtDepthAndIndex(_ref21) {
       return mapResult.node;
     });
   }
-
-  console.log('04 :', newNode);
 
   var nextNode = _objectSpread2(_objectSpread2({}, node), {}, {
     children: newChildren
@@ -1373,10 +1367,8 @@ function insertNode(_ref22) {
   var parentCustomPath = tempRes === null || tempRes === void 0 ? void 0 : (_tempRes$parentNode = tempRes.parentNode) === null || _tempRes$parentNode === void 0 ? void 0 : _tempRes$parentNode.path;
 
   if (parentCustomPath) {
-    console.log('Gonna break'); // eslint-disable-next-line no-param-reassign
-
+    // eslint-disable-next-line no-param-reassign
     newObj['path'] = [].concat(_toConsumableArray(parentCustomPath), [updatedNewNode === null || updatedNewNode === void 0 ? void 0 : updatedNewNode.id]);
-    console.log(' breaks');
   } else {
     // eslint-disable-next-line no-param-reassign
     newObj['path'] = [updatedNewNode === null || updatedNewNode === void 0 ? void 0 : updatedNewNode.id];
