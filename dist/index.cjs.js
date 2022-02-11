@@ -2712,7 +2712,7 @@ var ReactSortableTree = /*#__PURE__*/function (_Component) {
         },
         getNodeKey: this.props.getNodeKey
       });
-      this.props.onChange(treeData);
+      this.props.onChange(treeData, null);
       this.props.onVisibilityToggle({
         treeData: treeData,
         node: targetNode,
@@ -2742,7 +2742,7 @@ var ReactSortableTree = /*#__PURE__*/function (_Component) {
           path = _insertNode.path,
           nextParentNode = _insertNode.parentNode;
 
-      this.props.onChange(treeData);
+      this.props.onChange(treeData, node);
       this.props.onMoveNode({
         treeData: treeData,
         node: node,
@@ -2814,7 +2814,7 @@ var ReactSortableTree = /*#__PURE__*/function (_Component) {
 
         var expandedParentPath = rows[addedResult.treeIndex].path;
 
-        _this4.props.onChange(addedResult.treeData);
+        _this4.props.onChange(addedResult.treeData, draggedNode);
 
         return {
           draggedNode: draggedNode,
@@ -2890,7 +2890,7 @@ var ReactSortableTree = /*#__PURE__*/function (_Component) {
           });
         }
 
-        this.props.onChange(treeData);
+        this.props.onChange(treeData, node);
         this.props.onMoveNode({
           treeData: treeData,
           node: node,
@@ -3195,7 +3195,7 @@ var ReactSortableTree = /*#__PURE__*/function (_Component) {
       if (expand) {
         newState.instanceProps.ignoreOneTreeUpdate = true; // Prevents infinite loop
 
-        onChange(expandedTreeData);
+        onChange(expandedTreeData, null);
       }
 
       if (searchFinishCallback) {

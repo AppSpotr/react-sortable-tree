@@ -210,7 +210,7 @@ class ReactSortableTree extends Component {
       getNodeKey: this.props.getNodeKey,
     });
 
-    this.props.onChange(treeData);
+    this.props.onChange(treeData, null);
 
     this.props.onVisibilityToggle({
       treeData,
@@ -241,7 +241,7 @@ class ReactSortableTree extends Component {
       getNodeKey: this.props.getNodeKey,
     });
 
-    this.props.onChange(treeData);
+    this.props.onChange(treeData, node);
 
     this.props.onMoveNode({
       treeData,
@@ -300,7 +300,7 @@ class ReactSortableTree extends Component {
     // Update the tree with data leaving all paths leading to matching nodes open
     if (expand) {
       newState.instanceProps.ignoreOneTreeUpdate = true; // Prevents infinite loop
-      onChange(expandedTreeData);
+      onChange(expandedTreeData, null);
     }
 
     if (searchFinishCallback) {
@@ -374,7 +374,7 @@ class ReactSortableTree extends Component {
       const rows = this.getRows(addedResult.treeData);
       const expandedParentPath = rows[addedResult.treeIndex].path;
 
-      this.props.onChange(addedResult.treeData);
+      this.props.onChange(addedResult.treeData, draggedNode);
 
       return {
         draggedNode,
@@ -437,7 +437,7 @@ class ReactSortableTree extends Component {
         });
       }
 
-      this.props.onChange(treeData);
+      this.props.onChange(treeData, node);
 
       this.props.onMoveNode({
         treeData,
