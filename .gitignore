@@ -15,12 +15,17 @@ coverage
 
 # Build directories (Will be preserved by npm)
 .cache
-dist
-build
-style.css
-style.css.map
 
 # Error files
 yarn-error.log
 
 .vscode
+
+# YARN
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*

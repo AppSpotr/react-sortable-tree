@@ -375,7 +375,7 @@ export function map({
     currentIndex: -1,
     path: [],
     lowerSiblingCounts: [],
-  }).node.children;
+  }).node?.children;
 }
 
 /**
@@ -896,6 +896,8 @@ export function insertNode({
   ignoreCollapsed = true,
   expandParent = false,
 }) {
+  const updatedNewNode = { ...newNode };
+  let newObj = { ...newNode };
   if (!treeData && targetDepth === 0) {
     return {
       treeData: [newNode],
@@ -905,10 +907,34 @@ export function insertNode({
     };
   }
 
+  const tempRes = addNodeAtDepthAndIndex({
+    targetDepth,
+    minimumTreeIndex,
+    updatedNewNode,
+    ignoreCollapsed,
+    expandParent,
+    getNodeKey,
+    isPseudoRoot: true,
+    isLastChild: true,
+    node: { children: treeData },
+    currentIndex: -1,
+    currentDepth: -1,
+  });
+
+  const parentCustomPath = tempRes?.parentNode?.path;
+
+  if (parentCustomPath) {
+    // eslint-disable-next-line no-param-reassign
+    newObj['path'] = [...parentCustomPath, updatedNewNode?.id];
+  } else {
+    // eslint-disable-next-line no-param-reassign
+    newObj['path'] = [updatedNewNode?.id];
+  }
+
   const insertResult = addNodeAtDepthAndIndex({
     targetDepth,
     minimumTreeIndex,
-    newNode,
+    newNode: newObj,
     ignoreCollapsed,
     expandParent,
     getNodeKey,
@@ -920,17 +946,20 @@ export function insertNode({
   });
 
   if (!('insertedTreeIndex' in insertResult)) {
-    throw new Error('No suitable position found to insert.');
+    // APT-EDIT: don't throw error, return default instead
+    return {
+      treeData: [newObj],
+      treeIndex: 0,
+      path: [getNodeKey({ node: newObj, treeIndex: 0 })],
+      parentNode: null,
+    };
   }
 
   const treeIndex = insertResult.insertedTreeIndex;
   return {
     treeData: insertResult.node.children,
     treeIndex,
-    path: [
-      ...insertResult.parentPath,
-      getNodeKey({ node: newNode, treeIndex }),
-    ],
+    path: [...insertResult.parentPath, getNodeKey({ node: newObj, treeIndex })],
     parentNode: insertResult.parentNode,
   };
 }

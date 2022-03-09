@@ -25,13 +25,13 @@ export default {
     'react-dnd',
     'prop-types',
     'react-dnd-html5-backend',
-    'frontend-collective-react-dnd-scrollzone',
+    '@nosferatu500/react-dnd-scrollzone',
     'react-virtualized',
     'lodash.isequal',
   ],
   plugins: [
     nodeResolve(),
-    postcss({ extract: './style.css' }),
+    postcss({ extract: 'style.css' }),
     commonjs({
       include: 'node_modules/**',
     }),
